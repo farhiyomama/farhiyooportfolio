@@ -15,15 +15,9 @@
 }
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
-body {
-  color: var(--cream);
-  font-family: 'Jost', sans-serif;
-  background: var(--bg-dark);
-  overflow-x: hidden;
-  cursor: none;
-}
+body { color: var(--cream); font-family: 'Jost', sans-serif; background: var(--bg-dark); overflow-x: hidden; cursor: none; }
 
-/* ── NAV ── */
+/* ── NAVIGATION ── */
 nav { position:fixed; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:2rem 2.8rem; z-index: 100; }
 .nav-logo { font-family:'Cinzel',serif; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-pale); text-decoration: none; cursor: pointer; }
 .nav-logo span { display:block; font-size:.52rem; color:var(--gold); letter-spacing:.28em; }
@@ -35,31 +29,28 @@ nav { position:fixed; top:0; left:0; right:0; display:flex; align-items:center; 
 section { min-height: 100vh; display: none; padding: 120px 3rem 60px; position: relative; }
 section.active { display: block; }
 
-/* ── ABOUT ── */
-.about-container { display: flex; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; }
-.about-image { flex: 1; min-width: 300px; border: 1px solid var(--gold); padding: 10px; }
-.about-image img { width: 100%; display: block; filter: sepia(0.2) grayscale(0.2); }
-.about-text { flex: 1; min-width: 300px; }
-.about-text h2 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 2rem; margin-bottom: 1.5rem; }
-.about-text p { line-height: 1.8; font-size: 1.1rem; color: var(--muted); }
-
-/* ── GRID ── */
+/* ── GALLERY GRID ── */
 .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 30px; }
-.image-box { border: 1px solid rgba(201,169,110,0.2); overflow: hidden; aspect-ratio: 4/5; background: #15120d; }
+.image-box { border: 1px solid rgba(201,169,110,0.2); overflow: hidden; aspect-ratio: 4/5; background: #15120d; cursor: pointer; }
 .image-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
 .image-box:hover img { transform: scale(1.05); }
 
-/* ── CONTACT ── */
+/* ── LIGHTBOX (EXPAND) ── */
+#lightbox { position: fixed; inset: 0; background: rgba(10,8,4,0.95); z-index: 200; display: none; align-items: center; justify-content: center; padding: 40px; cursor: pointer; }
+#lightbox img { max-width: 90%; max-height: 90vh; border: 1px solid var(--gold); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+
+/* ── ABOUT & CONTACT ── */
+.about-container { display: flex; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; }
+.about-image { flex: 1; min-width: 300px; border: 1px solid var(--gold); padding: 10px; }
+.about-image img { width: 100%; display: block; filter: sepia(0.2); }
+.about-text { flex: 1; min-width: 300px; }
 .contact-wrap { text-align: center; max-width: 600px; margin: 10vh auto; }
 .social-icons { display: flex; justify-content: center; gap: 2.5rem; margin-top: 4rem; }
 .social-icons a svg { width: 35px; height: 35px; fill: var(--gold); transition: 0.3s; }
-.social-icons a:hover svg { fill: var(--gold-pale); transform: translateY(-5px); }
 
-/* ── AUDIO TOGGLE ── */
+/* ── AUDIO & CURSOR ── */
 .sound-toggle { position: fixed; bottom: 2.5rem; right: 2.5rem; z-index: 100; background: none; border: 1px solid var(--gold); padding: 8px 15px; cursor: pointer; }
 .sound-toggle span { font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--gold); letter-spacing: 2px; }
-
-/* ── CURSOR (Required from original) ── */
 #cursor { position:fixed; pointer-events:none; z-index:9999; width:30px; height:30px; transform:translate(-50%,-50%); }
 </style>
 </head>
@@ -67,6 +58,10 @@ section.active { display: block; }
 
 <div id="cursor">
   <svg viewBox="0 0 38 54"><ellipse cx="19" cy="27" rx="16" ry="23" fill="#f0e8d0"/><rect x="17.2" y="8" width="3.6" height="38" rx="1.8" fill="#1a0802"/></svg>
+</div>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="Expanded View">
 </div>
 
 <nav>
@@ -81,20 +76,18 @@ section.active { display: block; }
 </nav>
 
 <section id="home" class="active" style="display: flex; align-items: center; justify-content: center; text-align: center;">
-  <div class="hero">
+  <div>
     <h1 style="font-family:'Cormorant Garamond'; font-size: 6vw; font-style: italic;">the body remembers water</h1>
-    <p style="font-family:'Cinzel'; color:var(--gold); letter-spacing: 5px; margin-top: 10px;">SCROLL TO EXPLORE</p>
+    <p style="font-family:'Cinzel'; color:var(--gold); letter-spacing: 5px;">EXPLORE PORTFOLIO</p>
   </div>
 </section>
 
 <section id="about">
   <div class="about-container">
-    <div class="about-image">
-      <img src="images/bio.jpg" alt="Farhiyo Omar">
-    </div>
+    <div class="about-image"><img src="images/bio.jpg"></div>
     <div class="about-text">
-      <h2>Farhiyo Omar</h2>
-      <p>Photographer and visual storyteller. My work centers on the intersection of memory, culture, and the quiet moments in between. Based on the philosophy that every frame is a piece of a larger archive.</p>
+      <h2 style="font-family:'Cinzel'; color:var(--gold); margin-bottom:1rem;">Farhiyo Omar</h2>
+      <p style="line-height:1.8;">Photographer and visual storyteller. My work centers on the intersection of memory and culture. Every frame is a piece of a larger archive.</p>
     </div>
   </div>
 </section>
@@ -102,20 +95,20 @@ section.active { display: block; }
 <section id="portfolio">
   <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center;">PORTFOLIO</h2>
   <div class="portfolio-grid">
-    <div class="image-box"><img src="images/5C7BF463-D241-4637-BE98-3F3D30F4E4CA.jpeg"></div>
-    <div class="image-box"><img src="images/3D5F7957-1020-43DD-8BD3-0FB3408BAD5C.jpeg"></div>
-    <div class="image-box"><img src="images/BCB3B72F-A00F-4BE5-8BA5-29702AFFBCE5.jpeg"></div>
-    <div class="image-box"><img src="images/16138BBD-13BD-40CC-B627-AE9E43E561C1.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/5C7BF463-D241-4637-BE98-3F3D30F4E4CA.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/3D5F7957-1020-43DD-8BD3-0FB3408BAD5C.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/BCB3B72F-A00F-4BE5-8BA5-29702AFFBCE5.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/16138BBD-13BD-40CC-B627-AE9E43E561C1.jpeg"></div>
   </div>
 </section>
 
 <section id="archive">
   <h2 style="font-family:'Cinzel'; color:var(--gold); text-align:center;">THE ARCHIVE</h2>
   <div class="portfolio-grid">
-    <div class="image-box"><img src="images/5422C905-26E6-43C7-A1A1-2CB4645F3908.jpeg"></div>
-    <div class="image-box"><img src="images/887EED6D-BD4D-4BF0-96A5-78A61C3203FC.jpeg"></div>
-    <div class="image-box"><img src="images/6FF26F0D-5EC3-4373-9C35-1D661BCEBB46.jpeg"></div>
-    <div class="image-box"><img src="images/C4B5E13A-C7E3-4AAC-8DAD-5174295EBB38.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/5422C905-26E6-43C7-A1A1-2CB4645F3908.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/887EED6D-BD4D-4BF0-96A5-78A61C3203FC.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/6FF26F0D-5EC3-4373-9C35-1D661BCEBB46.jpeg"></div>
+    <div class="image-box" onclick="expandImage(this)"><img src="images/C4B5E13A-C7E3-4AAC-8DAD-5174295EBB38.jpeg"></div>
   </div>
 </section>
 
@@ -123,23 +116,18 @@ section.active { display: block; }
   <div class="contact-wrap">
     <h2 style="font-family:'Cinzel'; color:var(--gold);">GET IN TOUCH</h2>
     <div class="social-icons">
-      <a href="https://instagram.com/YOUR_USERNAME" target="_blank">
+      <a href="https://instagram.com/yourhandle" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
       </a>
-      <a href="mailto:YOUR_EMAIL@gmail.com">
+      <a href="mailto:youremail@gmail.com">
         <svg viewBox="0 0 24 24"><path d="M12 12.713l-11.985-9.713h23.971l-11.986 9.713zm-5.425-1.822l-6.575-5.329v12.501l6.575-7.172zm10.85 0l6.575 7.172v-12.501l-6.575 5.329zm-1.557 1.261l-3.868 3.135-3.868-3.135-8.11 8.848h24.068l-8.222-8.848z"/></svg>
       </a>
     </div>
   </div>
 </section>
 
-<audio id="bgAudio" loop>
-  <source src="audio/vibedepot-slow-jazz-419814.mp3" type="audio/mpeg">
-</audio>
-
-<button class="sound-toggle" onclick="toggleAudio()">
-  <span id="audioStatus">SOUND ON</span>
-</button>
+<audio id="bgAudio" loop><source src="audio/vibedepot-slow-jazz-419814.mp3" type="audio/mpeg"></audio>
+<button class="sound-toggle" onclick="toggleAudio()"><span id="audioStatus">SOUND ON</span></button>
 
 <script>
 function showSection(id) {
@@ -148,6 +136,17 @@ function showSection(id) {
   window.scrollTo(0,0);
 }
 
+/* Lightbox Logic */
+function expandImage(el) {
+  const imgSrc = el.querySelector('img').src;
+  document.getElementById('lightbox-img').src = imgSrc;
+  document.getElementById('lightbox').style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+}
+
+/* Audio & Cursor Logic */
 const audio = document.getElementById('bgAudio');
 let isPlaying = false;
 function toggleAudio() {
